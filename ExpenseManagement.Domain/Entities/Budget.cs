@@ -8,7 +8,7 @@
         public DateTime Month { get; set; } // Budget for a specific month
 
         // Foreign Key - User
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);

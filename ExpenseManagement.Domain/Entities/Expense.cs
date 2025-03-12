@@ -14,7 +14,7 @@
         public Category Category { get; set; }
 
         // Foreign Key - User (Who added the expense)
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);

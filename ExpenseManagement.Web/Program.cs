@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using ExpenseManagement.Domain.Entities;
 using ExpenseManagement.InfraStructure.Data;
 using Microsoft.EntityFrameworkCore;
+using ExpenseManagement.Application.Services.Implementation;
+using ExpenseManagement.Application.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnections"), b => b.MigrationsAssembly("ExpenseManagement.Infrastructure")));
 builder.Services.AddDefaultIdentity<User>().AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<IEmailService,EmailService>();
 
 var app = builder.Build();
 
@@ -31,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

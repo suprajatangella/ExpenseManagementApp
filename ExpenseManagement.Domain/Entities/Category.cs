@@ -10,6 +10,6 @@
         public List<Expense> Expenses { get; set; }
 
         public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; } = null;
     }
 }

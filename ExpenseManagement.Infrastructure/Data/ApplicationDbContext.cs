@@ -19,23 +19,21 @@ namespace ExpenseManagement.InfraStructure.Data
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Expense> Expenses { get; set; }
-        public DbSet<ExpenseCategory> ExpenseCategories { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<IdentityUserLogin<string>>()
                 .HasKey(login => new { login.LoginProvider, login.ProviderKey }); // Composite key
 
-            modelBuilder.Entity<ExpenseCategory>()
-        .HasOne(e => e.Expense)
-        .WithMany()
-        .HasForeignKey(e => e.ExpenseId)
-        .OnDelete(DeleteBehavior.NoAction); // Or use DeleteBehavior.NoAction
+        //    modelBuilder.Entity<ExpenseCategory>()
+        //.HasOne(e => e.Expense)
+        //.WithMany()
+        //.HasForeignKey(e => e.ExpenseId)
+        //.OnDelete(DeleteBehavior.NoAction); // Or use DeleteBehavior.NoAction
 
         }
 

@@ -8,6 +8,12 @@ namespace ExpenseManagement.Application.Interfaces
 {
     public interface IUnitOfWork
     {
+        IBudgetRepository Budget { get; }
+        ICategoryRepository Category { get; }
+        //IExpenseCategoryRepository ExpenseCategory { get; }
+        IExpenseRepository Expense { get; }
+        INotificationRepository Notification { get; }
+        IUserRepository User { get; }
         void Save();
     }
 }

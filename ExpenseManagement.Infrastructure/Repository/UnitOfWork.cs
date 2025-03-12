@@ -15,7 +15,7 @@ namespace ExpenseManagement.InfraStructure.Repository
 
         public ICategoryRepository Category { get; private set; }
 
-        public IExpenseCategoryRepository ExpenseCategory { get; private set; }
+        //public IExpenseCategoryRepository ExpenseCategory { get; private set; }
 
         public IExpenseRepository Expense { get; private set; }
 
@@ -28,8 +28,10 @@ namespace ExpenseManagement.InfraStructure.Repository
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            //Expense = new ExpenseRepository(_db);
-            //TaskComment = new TaskCommentRepository(_db);
+            Expense = new ExpenseRepository(_db);
+            Budget = new BudgetRepository(_db);
+            Category = new CategoryRepository(_db);
+            //ExpenseCategory = new ExpenseCategoryRepository(_db);
             Notification = new NotificationRepository(_db);
             User= new UserRepository(_db);
         }
