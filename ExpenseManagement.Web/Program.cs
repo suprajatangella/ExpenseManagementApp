@@ -4,6 +4,8 @@ using ExpenseManagement.InfraStructure.Data;
 using Microsoft.EntityFrameworkCore;
 using ExpenseManagement.Application.Services.Implementation;
 using ExpenseManagement.Application.Services.Interface;
+using ExpenseManagement.Application.Interfaces;
+using ExpenseManagement.InfraStructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddDefaultIdentity<User>().AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

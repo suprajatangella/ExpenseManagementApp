@@ -36,9 +36,9 @@ namespace ExpenseManagement.InfraStructure.Repository
             User= new UserRepository(_db);
         }
 
-        void IUnitOfWork.Save()
+        async Task IUnitOfWork.Save()
         {
-            _db.SaveChanges();
+           await _db.SaveChangesAsync();
         }
     }
 }

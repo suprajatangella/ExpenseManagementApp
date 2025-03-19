@@ -11,8 +11,8 @@ namespace ExpenseManagement.Application.Services.Interface
     {
         IEnumerable<Expense> GetAllExpenses(string userId, string userRole);
         Expense GetExpenseById(int id);
-        void CreateExpense(Expense expense);
-        void UpdateExpense(Expense expense);
+        string CreateExpense(Expense expense);
+        string UpdateExpense(Expense expense);
         bool DeleteExpense(int id);
     }
 }

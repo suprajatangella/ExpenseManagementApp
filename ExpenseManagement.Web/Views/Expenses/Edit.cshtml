@@ -1,0 +1,81 @@
+﻿@model Expense
+@{
+    // Get the user's ID from the claims
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Edit Expense</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            @* <input hidden id="UpdatedBy" name="UpdatedBy" value="@userId" /> *@
+            <div class="p-3">
+                @* <div asp-validation-summary="All"></div>  *@
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Id" disabled class="form-control border shadow" />
+                    <label asp-for="Id" class="ms-2"></label>
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Title" class="form-control border shadow" />
+                    <label asp-for="Title" class="ms-2"></label>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Amount" class="form-control border shadow" />
+                    <label asp-for="Amount" class="ms-2"></label>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Date" type="date" class="form-control border shadow" />
+                    <label asp-for="Date" class="ms-2"></label>
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <label for="PaymentMethod">Payment Method</label>
+                <select asp-for="PaymentMethod" asp-items="ViewBag.PaymentMethods" class="form-control">
+                    <option value="">-- Select Payment Method --</option>
+                </select>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Notes" class="form-control border shadow" />
+                    <label asp-for="Notes" class="ms-2"></label>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <select asp-for="UserId" asp-items="ViewBag.Users" class="form-control">
+                        <option value="">-- Select User --</option>
+                    </select>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="UserId" />
+                }
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle"></i> Update
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Expenses" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -14,6 +14,6 @@ namespace ExpenseManagement.Application.Interfaces
         IExpenseRepository Expense { get; }
         INotificationRepository Notification { get; }
         IUserRepository User { get; }
-        void Save();
+        Task Save();
     }
 }

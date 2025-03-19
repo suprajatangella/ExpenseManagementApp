@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ExpenseManagement.Application.Interfaces;
 using ExpenseManagement.Application.Services.Interface;
 using ExpenseManagement.Domain.Entities;
+using Microsoft.Data.SqlClient;
 
 namespace ExpenseManagement.Application.Services.Implementation
 {
@@ -18,10 +19,27 @@ namespace ExpenseManagement.Application.Services.Implementation
         {
             _unitOfWork = unitOfWork;
         }
-        public void CreateExpense(Expense expense)
+        public string CreateExpense(Expense expense)
         {
-            _unitOfWork.Expense.Add(expense);
-            _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Expense.Add(expense);
+                _unitOfWork.Save();
+                return "Expense added successfully!";
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is SqlException sqlEx)
+                {
+                    // Check for the specific error number thrown by the trigger
+                    if (sqlEx.Number == 50001) // This is the error number from THROW in SQL
+                    {
+                        return "⚠️ Alert: Your spending has exceeded the monthly budget limit!";
+                    }
+                }
+
+                return "Error while adding expense. Please try again.";
+            }
         }
 
         public bool DeleteExpense(int id)
@@ -42,14 +60,14 @@ namespace ExpenseManagement.Application.Services.Implementation
             if (userRole == "Admin")
             {
                 // Admins can view all expenses
-                return _unitOfWork.Expense.GetAll()
+                return _unitOfWork.Expense.GetAll(includeProperties: "Category,User")
                 .OrderByDescending(n => n.CreatedDate)
                 .ToList();
             }
             else
             {
                 // Regular users can only view their own expenses
-                return _unitOfWork.Expense.GetAll()
+                return _unitOfWork.Expense.GetAll(includeProperties: "Category,User")
                 .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.CreatedDate)
                 .ToList();
@@ -59,13 +77,30 @@ namespace ExpenseManagement.Application.Services.Implementation
 
         public Expense GetExpenseById(int id)
         {
-            return _unitOfWork.Expense.Get(n=> n.Id == id);
+            return _unitOfWork.Expense.Get(n=> n.Id == id, includeProperties: "Category,User");
         }
 
-        public void UpdateExpense(Expense expense)
+        public string UpdateExpense(Expense expense)
         {
-            _unitOfWork.Expense.Update(expense);
-            _unitOfWork.Save();
+            try
+            {
+                _unitOfWork.Expense.Update(expense);
+                _unitOfWork.Save();
+                return "Expense updated successfully!";
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is SqlException sqlEx)
+                {
+                    // Check for the specific error number thrown by the trigger
+                    if (sqlEx.Number == 50001) // This is the error number from THROW in SQL
+                    {
+                        throw new Exception("⚠️ Alert: Your spending has exceeded the monthly budget limit!");
+                    }
+                }
+                throw new Exception("Error while updating expense. Please try again.");
+            }
+
         }
     }
 }
