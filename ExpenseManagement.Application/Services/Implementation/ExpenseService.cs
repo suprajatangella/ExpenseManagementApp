@@ -23,8 +23,9 @@ namespace ExpenseManagement.Application.Services.Implementation
         {
             try
             {
-                _unitOfWork.Expense.Add(expense);
-                _unitOfWork.Save();
+                //_unitOfWork.Expense.Add(expense);
+                _unitOfWork.Expense.AddExpense(expense);
+                //_unitOfWork.Save();
                 return "Expense added successfully!";
             }
             catch (DbUpdateException ex)
@@ -44,12 +45,12 @@ namespace ExpenseManagement.Application.Services.Implementation
 
         public bool DeleteExpense(int id)
         {
-            var expense = _unitOfWork.Expense.Get(n => n.Id == id);
+            var expense = _unitOfWork.Expense.Get(n => n.Id == id, tracked: true);
 
             if (expense != null)
             {
-                _unitOfWork.Expense.Remove(expense);
-                _unitOfWork.Save();
+                _unitOfWork.Expense.DeleteExpense(id);
+                //_unitOfWork.Save();
                 return true;
             }
             return false;
@@ -60,14 +61,14 @@ namespace ExpenseManagement.Application.Services.Implementation
             if (userRole == "Admin")
             {
                 // Admins can view all expenses
-                return _unitOfWork.Expense.GetAll(includeProperties: "Category,User")
+                return _unitOfWork.Expense.GetAll(includeProperties: "Category,User", tracked: true)
                 .OrderByDescending(n => n.CreatedDate)
                 .ToList();
             }
             else
             {
                 // Regular users can only view their own expenses
-                return _unitOfWork.Expense.GetAll(includeProperties: "Category,User")
+                return _unitOfWork.Expense.GetAll(includeProperties: "Category,User", tracked: true) 
                 .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.CreatedDate)
                 .ToList();
@@ -77,15 +78,15 @@ namespace ExpenseManagement.Application.Services.Implementation
 
         public Expense GetExpenseById(int id)
         {
-            return _unitOfWork.Expense.Get(n=> n.Id == id, includeProperties: "Category,User");
+            return _unitOfWork.Expense.Get(n=> n.Id == id, includeProperties: "Category,User", tracked: true);
         }
 
         public string UpdateExpense(Expense expense)
         {
             try
             {
-                _unitOfWork.Expense.Update(expense);
-                _unitOfWork.Save();
+                _unitOfWork.Expense.UpdateExpense(expense);
+                //_unitOfWork.Save();
                 return "Expense updated successfully!";
             }
             catch (DbUpdateException ex)

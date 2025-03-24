@@ -38,7 +38,15 @@ namespace ExpenseManagement.InfraStructure.Repository
 
         async Task IUnitOfWork.Save()
         {
-           await _db.SaveChangesAsync();
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+             //await _db.SaveChangesAsync();
         }
     }
 }

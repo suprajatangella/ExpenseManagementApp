@@ -9,6 +9,8 @@ namespace ExpenseManagement.Application.Interfaces
 {
     public interface IExpenseRepository  : IRepository<Expense>
     {
-        void Update(Expense entity);
+        Task AddExpense(Expense expense);
+        Task UpdateExpense(Expense expense);
+        Task DeleteExpense(int Id);
     }
 }

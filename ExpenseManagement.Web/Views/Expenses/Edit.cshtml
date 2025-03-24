@@ -14,6 +14,7 @@
     </div>
     <div class="card-body border p-4">
         <form method="post" class="row" enctype="multipart/form-data">
+            <input type="hidden" asp-for="CategoryId" />
             @* <input hidden id="UpdatedBy" name="UpdatedBy" value="@userId" /> *@
             <div class="p-3">
                 @* <div asp-validation-summary="All"></div>  *@
