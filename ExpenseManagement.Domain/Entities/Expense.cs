@@ -22,6 +22,8 @@ namespace ExpenseManagement.Domain.Entities
         
         public User? User { get; set; }
 
+        public string? ReceiptPath { get; set; }
+
         public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
         public DateTime? UpdatedDate { get; set; } = null;
 

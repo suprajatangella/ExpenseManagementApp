@@ -36,17 +36,17 @@ namespace ExpenseManagement.InfraStructure.Repository
             User= new UserRepository(_db);
         }
 
-        async Task IUnitOfWork.Save()
+        void IUnitOfWork.Save()
         {
             try
             {
-                await _db.SaveChangesAsync();
+                _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-             //await _db.SaveChangesAsync();
+            //await _db.SaveChangesAsync();
         }
     }
 }

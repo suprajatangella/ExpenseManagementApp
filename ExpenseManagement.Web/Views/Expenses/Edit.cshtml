@@ -47,6 +47,11 @@
                     <label asp-for="Notes" class="ms-2"></label>
                     <span asp-validation-for="Notes" class="text-danger"></span>
                 </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="ReceiptPath" name="Receipt" type="file" class="form-control border shadow" />
+                    <label asp-for="ReceiptPath" class="ms-2"></label>
+                    <span asp-validation-for="ReceiptPath" class="text-danger"></span>
+                </div>
                 @if (User.IsInRole("Admin"))
                 {
                     <select asp-for="UserId" asp-items="ViewBag.Users" class="form-control">

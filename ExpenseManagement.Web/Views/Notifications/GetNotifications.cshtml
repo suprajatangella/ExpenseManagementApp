@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Notification>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Notifications</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border p-4">
+        <div class="row pb-3">
+            <div class="col-6 offset-6 text-end">
+                <a asp-controller="Notifications" asp-action="CreateNotification" class="btn btn-secondary">
+                    <i class="bi bi-plus-circle"></i> Create New Notification
+                </a>
+            </div>
+        </div>
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var notification in Model)
+                    {
+                        
+                <tr>
+                    <td>@notification.Message</td>
+                    <td>
+                                @notification.NotificationTypeText
+                    </td>
+                    <td>@notification.CreatedDate</td>
+                    <td>@(notification.IsRead ? "Read" : "Unread")</td>
+                    <td>
+                        @if (!notification.IsRead)
+                        {
+                            <form asp-action="MarkAsRead" asp-controller="Notifications" method="post">
+                                <input type="hidden" name="id" value="@notification.Id" />
+                                <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Already Read</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No notifications to display.</p>
+}
+</div>
+</div>

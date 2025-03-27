@@ -26,6 +26,7 @@
                     <th>Date</th>
                     <th>Category</th>
                     <th>User Name</th>
+                    <th>Receipt</th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,6 +39,16 @@
                         <td>@obj.Date</td>
                         <td>@(obj.Category?.Name ?? "No Category")</td>
                         <td>@(obj.User?.FullName ?? "Not Assigned")</td>
+                        <td>
+                        @if (!string.IsNullOrEmpty(obj.ReceiptPath))
+                        {
+                                <a href="@obj.ReceiptPath" target="_blank">View Receipt</a>
+                        }
+                        else
+                        {
+                                <a href="#" class="text-muted">No Receipt</a>
+                        }
+                        </td>
                         <td>
                             <div class="w-75 btn-group" role="group">
                                 <a asp-controller="Expenses" asp-action="Edit" asp-route-Id="@obj.Id"

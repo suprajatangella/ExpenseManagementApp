@@ -23,9 +23,15 @@ namespace ExpenseManagement.InfraStructure.Repository
         {
             try
             {
-                await _db.Database.ExecuteSqlRawAsync(
-            "INSERT INTO Expenses (Amount, Date, PaymentMethod, UserId, Title, Notes, CategoryId, CreatedDate, CreatedBy) VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8)",
-            expense.Amount, expense.Date, expense.PaymentMethod, expense.UserId, expense.Title, expense.Notes, expense.CategoryId, expense.CreatedDate, expense.CreatedBy);
+                using (var connection = _db.Database.GetDbConnection())
+                {
+                    await connection.OpenAsync();
+                    await using var transaction = await _db.Database.BeginTransactionAsync();
+                    await _db.Database.ExecuteSqlRawAsync(
+                    "INSERT INTO Expenses (Amount, Date, PaymentMethod, UserId, Title, Notes, CategoryId, CreatedDate, CreatedBy, ReceiptPath) VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9)",
+                     expense.Amount, expense.Date, expense.PaymentMethod, expense.UserId, expense.Title, expense.Notes, expense.CategoryId, expense.CreatedDate, expense.CreatedBy, expense.ReceiptPath);
+                    await transaction.CommitAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -42,9 +48,11 @@ namespace ExpenseManagement.InfraStructure.Repository
                 using (var connection = _db.Database.GetDbConnection())
                 {
                     await connection.OpenAsync();
+                    await using var transaction = await _db.Database.BeginTransactionAsync();
                     await _db.Database.ExecuteSqlRawAsync(
-                "UPDATE Expenses SET Amount = @p0, Date = @p1, PaymentMethod = @p2, UserId = @p4, Title = @p5, Notes = @p6, CategoryId = @p7, UpdatedDate = @p8, UpdatedBy = @p9 WHERE Id = @p3",
-                expense.Amount, expense.Date, expense.PaymentMethod, expense.Id, expense.UserId, expense.Title, expense.Notes, expense.CategoryId, expense.UpdatedDate, expense.UpdatedBy);
+                   "UPDATE Expenses SET Amount = @p0, Date = @p1, PaymentMethod = @p2, UserId = @p4, Title = @p5, Notes = @p6, CategoryId = @p7, UpdatedDate = @p8, UpdatedBy = @p9, ReceiptPath = @p10 WHERE Id = @p3",
+                    expense.Amount, expense.Date, expense.PaymentMethod, expense.Id, expense.UserId, expense.Title, expense.Notes, expense.CategoryId, expense.UpdatedDate, expense.UpdatedBy, expense.ReceiptPath);
+                    await transaction.CommitAsync();
                 }
             }
             catch (Exception ex)
