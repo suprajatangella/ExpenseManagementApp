@@ -43,7 +43,7 @@ namespace ExpenseManagement.Web.Controllers
 
                 // Add title
                 // Create a font for the title
-                Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, Font.UNDERLINE);
+                Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16, Font.UNDERLINE, BaseColor.BLUE ); 
 
                 // Add title
                 Paragraph title = new Paragraph("Expense Report - " + DateTime.Now.ToString("MMMM yyyy"), titleFont)
@@ -62,14 +62,29 @@ namespace ExpenseManagement.Web.Controllers
                 document.Add(new Paragraph("\n"));
 
                 // Create a font for the table header
-                Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+                Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
 
                 // Add expenses in a table format
                 PdfPTable table = new PdfPTable(3);
-                table.AddCell(new PdfPCell(new Phrase("Date", headerFont)));
-                table.AddCell(new PdfPCell(new Phrase("Description", headerFont)));
-                table.AddCell(new PdfPCell(new Phrase("Amount", headerFont)));
+                PdfPCell dateHeader = new PdfPCell(new Phrase("Date", headerFont))
+                {
+                    BackgroundColor = BaseColor.BLUE,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                };
+                PdfPCell descriptionHeader = new PdfPCell(new Phrase("Description", headerFont))
+                {
+                    BackgroundColor = BaseColor.BLUE,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                };
+                PdfPCell amountHeader = new PdfPCell(new Phrase("Amount", headerFont))
+                {
+                    BackgroundColor = BaseColor.BLUE,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                };
 
+                table.AddCell(dateHeader);
+                table.AddCell(descriptionHeader);
+                table.AddCell(amountHeader);
                 decimal totalAmount = 0;
 
                 foreach (var expense in model.Expenses)
@@ -83,11 +98,16 @@ namespace ExpenseManagement.Web.Controllers
                 PdfPCell totalCell = new PdfPCell(new Phrase("Total", headerFont))
                 {
                     Colspan = 2,
-                    HorizontalAlignment = Element.ALIGN_RIGHT
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    BackgroundColor = BaseColor.BLUE
+                    
                 };
 
                 table.AddCell(totalCell);
-                table.AddCell(new PdfPCell(new Phrase(totalAmount.ToString("C"), headerFont)));
+                table.AddCell(new PdfPCell(new Phrase(totalAmount.ToString("C"), headerFont))
+                    {
+                        BackgroundColor = BaseColor.BLUE
+        });
 
 
                 document.Add(table);
