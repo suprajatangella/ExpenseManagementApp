@@ -70,12 +70,25 @@ namespace ExpenseManagement.Web.Controllers
                 table.AddCell(new PdfPCell(new Phrase("Description", headerFont)));
                 table.AddCell(new PdfPCell(new Phrase("Amount", headerFont)));
 
+                decimal totalAmount = 0;
+
                 foreach (var expense in model.Expenses)
                 {
                     table.AddCell(expense.Date.ToShortDateString());
                     table.AddCell(expense.Notes);
                     table.AddCell(expense.Amount.ToString("C"));
+                    totalAmount += expense.Amount;
                 }
+
+                PdfPCell totalCell = new PdfPCell(new Phrase("Total", headerFont))
+                {
+                    Colspan = 2,
+                    HorizontalAlignment = Element.ALIGN_RIGHT
+                };
+
+                table.AddCell(totalCell);
+                table.AddCell(new PdfPCell(new Phrase(totalAmount.ToString("C"), headerFont)));
+
 
                 document.Add(table);
                 document.Close();
