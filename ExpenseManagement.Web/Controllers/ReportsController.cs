@@ -66,20 +66,24 @@ namespace ExpenseManagement.Web.Controllers
 
                 // Add expenses in a table format
                 PdfPTable table = new PdfPTable(3);
+                table.WidthPercentage = 100;
                 PdfPCell dateHeader = new PdfPCell(new Phrase("Date", headerFont))
                 {
                     BackgroundColor = BaseColor.BLUE,
-                    HorizontalAlignment = Element.ALIGN_CENTER
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    BorderWidth = 2f
                 };
                 PdfPCell descriptionHeader = new PdfPCell(new Phrase("Description", headerFont))
                 {
                     BackgroundColor = BaseColor.BLUE,
-                    HorizontalAlignment = Element.ALIGN_CENTER
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    BorderWidth = 2f
                 };
                 PdfPCell amountHeader = new PdfPCell(new Phrase("Amount", headerFont))
                 {
                     BackgroundColor = BaseColor.BLUE,
-                    HorizontalAlignment = Element.ALIGN_CENTER
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    BorderWidth = 2f
                 };
 
                 table.AddCell(dateHeader);
@@ -89,9 +93,25 @@ namespace ExpenseManagement.Web.Controllers
 
                 foreach (var expense in model.Expenses)
                 {
-                    table.AddCell(expense.Date.ToShortDateString());
-                    table.AddCell(expense.Notes);
-                    table.AddCell(expense.Amount.ToString("C"));
+                    PdfPCell dateCell = new PdfPCell(new Phrase(expense.Date.ToShortDateString()))
+                    {
+                        BorderWidth = 2f
+                    };
+                    PdfPCell descriptionCell = new PdfPCell(new Phrase(expense.Notes))
+                    {
+                        BorderWidth = 2f
+                    };
+                    PdfPCell amountCell = new PdfPCell(new Phrase(expense.Amount.ToString("C")))
+                    {
+                        BorderWidth = 2f
+                    };
+
+                    table.AddCell(dateCell);
+                    table.AddCell(descriptionCell);
+                    table.AddCell(amountCell);
+                    //table.AddCell(expense.Date.ToShortDateString());
+                    //table.AddCell(expense.Notes);
+                    //table.AddCell(expense.Amount.ToString("C"));
                     totalAmount += expense.Amount;
                 }
 
@@ -99,15 +119,17 @@ namespace ExpenseManagement.Web.Controllers
                 {
                     Colspan = 2,
                     HorizontalAlignment = Element.ALIGN_RIGHT,
-                    BackgroundColor = BaseColor.BLUE
-                    
+                    BackgroundColor = BaseColor.BLUE,
+                    BorderWidth = 2f
+
                 };
 
                 table.AddCell(totalCell);
                 table.AddCell(new PdfPCell(new Phrase(totalAmount.ToString("C"), headerFont))
                     {
-                        BackgroundColor = BaseColor.BLUE
-        });
+                        BackgroundColor = BaseColor.BLUE,
+                        BorderWidth = 2f
+                });
 
 
                 document.Add(table);
