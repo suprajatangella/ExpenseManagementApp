@@ -79,8 +79,8 @@ namespace ExpenseManagement.Web.Controllers
 
                 document.Add(table);
                 document.Close();
-
-                return File(ms.ToArray(), "application/pdf", "ExpenseReport.pdf");
+                TempData["Success"] = "Expense report generated successfully!";
+                return File(ms.ToArray(), "application/pdf", "ExpenseReport - "+ DateTime.UtcNow + ".pdf");
                 //return View("Index", model);
             }
         }
