@@ -14,5 +14,7 @@ namespace ExpenseManagement.Application.Services.Interface
         string CreateExpense(Expense expense);
         string UpdateExpense(Expense expense);
         bool DeleteExpense(int id);
+
+        IEnumerable<Expense> GetExpensesReportData(int year, int month, string userId);
     }
 }

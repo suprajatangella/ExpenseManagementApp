@@ -1,0 +1,82 @@
+﻿@model ReportVM
+
+@{
+    var months = System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames
+        .Where(m => !string.IsNullOrEmpty(m))
+        .Select((m, index) => new { Name = m, Value = index + 1 });
+    var years = Enumerable.Range(DateTime.Now.Year - 10, 11).Reverse();
+}
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Expenses Report</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <form asp-action="GenerateExpenseReport" asp-controller="Reports" method="post" class="row g-3">
+            <div class="col-md-4">
+                <label for="month" class="form-label">Month</label>
+                <select id="month" asp-for="Month" name="Month" class="form-select">
+                    @foreach (var month in months)
+                    {
+                        <option value="@month.Value">@month.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="year" class="form-label">Year</label>
+                <select id="year" asp-for="Year" name="Year" class="form-select">
+                    @foreach (var year in years)
+                    {
+                        <option value="@year">@year</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 align-self-end">
+                <button type="submit" class="btn btn-primary">Generate Report</button>
+            </div>
+        </form>
+
+      @*   @if (Model.Expenses != null && Model.Expenses.Any())
+        {
+            <table class="table table-bordered table-striped mt-4">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>User Name</th>
+                        <th>Receipt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var expense in Model.Expenses)
+                    {
+                        <tr>
+                            <td>@expense.Title</td>
+                            <td>@expense.Amount</td>
+                            <td>@expense.Date.ToString("d")</td>
+                            <td>@(expense.Category?.Name ?? "No Category")</td>
+                            <td>@(expense.User?.FullName ?? "Not Assigned")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(expense.ReceiptPath))
+                                {
+                                    <a href="@expense.ReceiptPath" target="_blank">View Receipt</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No Receipt</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        } *@
+       
+    </div>
+</div>

@@ -12,5 +12,6 @@ namespace ExpenseManagement.Application.Interfaces
         Task AddExpense(Expense expense);
         Task UpdateExpense(Expense expense);
         Task DeleteExpense(int Id);
+        IEnumerable<Expense> GetExpensesReportData(int year, int month, string userId);
     }
 }

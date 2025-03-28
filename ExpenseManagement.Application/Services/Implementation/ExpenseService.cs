@@ -81,6 +81,11 @@ namespace ExpenseManagement.Application.Services.Implementation
             return _unitOfWork.Expense.Get(n=> n.Id == id, includeProperties: "Category,User", tracked: true);
         }
 
+        public IEnumerable<Expense> GetExpensesReportData(int year, int month, string userId)
+        {
+            return _unitOfWork.Expense.GetExpensesReportData(year, month, userId);
+        }
+
         public string UpdateExpense(Expense expense)
         {
             try

@@ -80,6 +80,11 @@ namespace ExpenseManagement.InfraStructure.Repository
                 throw ex;
             }
         }
-        
+
+        public IEnumerable<Expense> GetExpensesReportData(int year, int month, string userId)
+        {
+            return _db.Expenses
+            .Where(e => e.UserId == userId && e.Date.Month == month && e.Date.Year == year);
+        }
     }
 }
