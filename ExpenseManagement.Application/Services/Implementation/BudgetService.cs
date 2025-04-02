@@ -42,19 +42,24 @@ namespace ExpenseManagement.Application.Services.Implementation
             if (userRole == "Admin")
             {
                 // Admins can view all budgets
-                return _unitOfWork.Budget.GetAll()
+                return _unitOfWork.Budget.GetAll(includeProperties: "User")
                 .OrderByDescending(n => n.CreatedDate)
                 .ToList();
             }
             else
             {
                 // Regular users can only view their own budgets
-                return _unitOfWork.Budget.GetAll()
+                return _unitOfWork.Budget.GetAll(includeProperties: "User")
                 .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.CreatedDate)
                 .ToList();
 
             }
+        }
+
+        public bool CheckIfBudgetExists(string userId, int Month, int Year)
+        {
+            return _unitOfWork.Budget.Get(n => n.UserId == userId && n.Month.Month == Month && n.Month.Year == Year) != null;
         }
 
         public Budget GetBudgetById(int id)

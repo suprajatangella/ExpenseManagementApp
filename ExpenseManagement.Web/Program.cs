@@ -19,6 +19,7 @@ builder.Services.AddDefaultIdentity<User>().AddRoles<IdentityRole>()
 builder.Services.AddScoped<IEmailService,EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

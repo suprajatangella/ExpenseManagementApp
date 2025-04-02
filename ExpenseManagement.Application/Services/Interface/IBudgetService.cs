@@ -14,5 +14,6 @@ namespace ExpenseManagement.Application.Services.Interface
         void CreateBudget(Budget budget);
         void UpdateBudget(Budget budget);
         bool DeleteBudget(int id);
+        bool CheckIfBudgetExists(string userId, int Month, int Year);
     }
 }
