@@ -13,10 +13,12 @@ namespace ExpenseManagement.Web.Controllers
     {
         private readonly IExpenseService _expenseService;
         private readonly UserManager<User> _userManager;
-        public ReportsController(UserManager<User> userManager, IExpenseService expenseService)
+        private readonly IEmailService _emailService;
+        public ReportsController(UserManager<User> userManager, IExpenseService expenseService, IEmailService emailService)
         {
             _userManager = userManager;
             _expenseService = expenseService;
+            _emailService = emailService;
         }
         public IActionResult Index()
         {
@@ -135,6 +137,12 @@ namespace ExpenseManagement.Web.Controllers
                 document.Add(table);
                 document.Close();
                 TempData["Success"] = "Expense report generated successfully!";
+                // Send the PDF as an attachment via email
+                _emailService.SendEmailWithAttachment(
+                     ms.ToArray(),
+                    "ExpenseReport - " + DateTime.UtcNow + ".pdf"
+                );
+
                 return File(ms.ToArray(), "application/pdf", "ExpenseReport - "+ DateTime.UtcNow + ".pdf");
                 //return View("Index", model);
             }
